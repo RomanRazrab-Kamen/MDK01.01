@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ba0e193febe04cc38aa38be7862d6e9a" Name="Diagram1" ZoomLevel="96">
+        <EntityTypeShape EntityType="PR16DBModel.Артикул" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR16DBModel.ЕдиницыИзмерения" Width="1.5" PointX="3.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR16DBModel.Заказ" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR16DBModel.КатегорияТовара" Width="1.5" PointX="3.75" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR16DBModel.Поставщик" Width="1.5" PointX="3.75" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR16DBModel.Производитель" Width="1.5" PointX="3.75" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR16DBModel.Роль" Width="1.5" PointX="5.75" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR16DBModel.Сотрудник" Width="1.5" PointX="8" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR16DBModel.СписокЗаказов" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR16DBModel.СтатусЗаказа" Width="1.5" PointX="1.5" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR16DBModel.ТипТовара" Width="1.5" PointX="3.75" PointY="17.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PR16DBModel.Товар" Width="1.5" PointX="6" PointY="4" IsExpanded="true" />
+        <AssociationConnector Association="PR16DBModel.FK_СписокЗаказов_Артикул" ManuallyRouted="false" />
+        <AssociationConnector Association="PR16DBModel.FK_Товар_Артикул" ManuallyRouted="false" />
+        <AssociationConnector Association="PR16DBModel.FK_Товар_ЕдиницыИзмерения" ManuallyRouted="false" />
+        <AssociationConnector Association="PR16DBModel.FK_Заказ_СтатусЗаказа" ManuallyRouted="false" />
+        <AssociationConnector Association="PR16DBModel.FK_СписокЗаказов_Заказ" ManuallyRouted="false" />
+        <AssociationConnector Association="PR16DBModel.FK_Товар_КатегорияТовара" ManuallyRouted="false" />
+        <AssociationConnector Association="PR16DBModel.FK_Товар_Поставщик" ManuallyRouted="false" />
+        <AssociationConnector Association="PR16DBModel.FK_Товар_Производитель" ManuallyRouted="false" />
+        <AssociationConnector Association="PR16DBModel.FK_Сотрудник_Роль" ManuallyRouted="false" />
+        <AssociationConnector Association="PR16DBModel.FK_Товар_ТипТовара" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

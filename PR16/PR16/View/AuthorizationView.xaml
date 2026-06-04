@@ -1,0 +1,26 @@
+﻿<Window x:Class="PR16.View.Authorization"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PR16"
+        mc:Ignorable="d"
+        Title="Авторизация" Height="370" Width="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Margin="20">
+            <TextBlock Text="Авторизация" Margin="30" FontSize="26" FontWeight="Bold" TextAlignment="Center"/>
+            <TextBlock Text="Логин" Margin="10,10,10,0"/>
+            <TextBox Name="TextBoxLogin" Margin="10"/>
+            <TextBlock Text="Пароль" Margin="10,10,10,0"/>
+            <TextBox Name="TextBoxPassword" Margin="10"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="ButtonAuthorization" Content="Войти" Margin="10" Height="30" Width="150" Click="ButtonAuthorization_Click"/>
+                <Button Name="ButtonRegistration" Content="Регистрация" Margin="20,0,0,0" Height="30" Width="150" Click="ButtonRegistration_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
