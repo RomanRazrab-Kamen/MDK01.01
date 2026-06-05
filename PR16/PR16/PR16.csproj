@@ -148,6 +148,9 @@
     <Compile Include="View\AuthorizedClientView.xaml.cs">
       <DependentUpon>AuthorizedClientView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ManagerView.xaml.cs">
+      <DependentUpon>ManagerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\RegisrationView.xaml.cs">
       <DependentUpon>RegisrationView.xaml</DependentUpon>
     </Compile>
@@ -164,6 +167,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\AuthorizedClientView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ManagerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
