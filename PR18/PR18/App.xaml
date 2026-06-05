@@ -4,6 +4,21 @@
              xmlns:local="clr-namespace:PR18"
              StartupUri="Views/Authorization.xaml">
     <Application.Resources>
-         
+       
+        <SolidColorBrush x:Key="MainBgBrush" Color="White"/>
+        <SolidColorBrush x:Key="SecondaryBrush" Color="#76E383"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="#498C51"/>
+
+        <Style TargetType="Control" x:Key="BaseStyle">
+            <Setter Property="FontFamily" Value="Comic Sans MS"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style TargetType="Button" BasedOn="{StaticResource BaseStyle}">
+            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
     </Application.Resources>
 </Application>

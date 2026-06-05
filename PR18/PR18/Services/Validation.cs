@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace PR15Hash.Services
+namespace PR18.Services
 {
     public static class Validation
     {

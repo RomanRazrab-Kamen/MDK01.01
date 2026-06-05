@@ -41,6 +41,9 @@
     <Reference Include="BCrypt-Net-Next, Version=4.2.0.0, Culture=neutral, PublicKeyToken=1e11be04b6288443, processorArchitecture=MSIL">
       <HintPath>..\packages\BCrypt.Net-Next.4.2.0\lib\net48\BCrypt-Net-Next.dll</HintPath>
     </Reference>
+    <Reference Include="EasyCaptcha.Wpf, Version=0.9.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EasyCaptcha.Wpf.0.9.0.3\lib\net45\EasyCaptcha.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.2\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -113,11 +116,20 @@
     </Compile>
     <Compile Include="Services\AuthorizeService.cs" />
     <Compile Include="Services\Validation.cs" />
+    <Compile Include="Views\AdminView.xaml.cs">
+      <DependentUpon>AdminView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\GuestView.xaml.cs">
+      <DependentUpon>GuestView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Regisration.xaml.cs">
       <DependentUpon>Regisration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\VisitorView.xaml.cs">
+      <DependentUpon>VisitorView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -171,13 +183,25 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\AdminView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Authorization.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\GuestView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Regisration.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\VisitorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

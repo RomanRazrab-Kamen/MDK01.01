@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PR15Hash.Views
+namespace PR18.Views
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -32,33 +32,81 @@ namespace PR15Hash.Views
             regisration.Show();
             this.Close();
         }
-
+        private void ButtonCountineAsGuest_Click(object sender, RoutedEventArgs e)
+        {
+            GuestView guestView = new GuestView();
+            guestView.Show();
+            this.Close();
+        }
         private void ButtonAuthorization_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 using (var db = new PR18DBEntities())
                 {
-                    User user = db.User.FirstOrDefault(x => x.Login == TextBoxLogin.Text);
+                    User user = db.User.FirstOrDefault(x => x.Login == TextBoxLogin.Text.Trim());
 
-                    if (user != null)
+                    if (user == null)
                     {
-                        bool succsedHashPassword = BCrypt.Net.BCrypt.Verify(TextBoxPassword.Text, user.Password);
+                        MessageBox.Show("Пароль или логин неверный!");
+                        return;
+                    }
 
-                        if (succsedHashPassword)
+                    if (user.LockoutEnd.HasValue && user.LockoutEnd.Value > DateTime.Now)
+                    {
+                        var remainingTime = user.LockoutEnd.Value - DateTime.Now;
+                        MessageBox.Show($"Превышено количество попыток ввода. Доступ заблокирован!\n" + $"Осталось: {remainingTime.Minutes} мин. {remainingTime.Seconds} сек.");
+                        return;
+                    }
+
+                    bool succsedHashPassword = BCrypt.Net.BCrypt.Verify(TextBoxPassword.Text, user.Password);
+
+                    if (!succsedHashPassword)
+                    {
+                        user.FailedAttempts = (user.FailedAttempts ?? 0) + 1;
+
+                        if (user.FailedAttempts >= 3)
                         {
-                            MessageBox.Show("Успешный вход!");
+                            user.LockoutEnd = DateTime.Now.AddMinutes(3);
+                            db.SaveChanges();
+                            MessageBox.Show("Вы ввели неправильный пароль 3 раза. Ввод заблокирован на 3 минуты!");
                         }
                         else
                         {
-                            MessageBox.Show("Пароль или логин неверный!");
+                            db.SaveChanges();
+                            int attemptsLeft = 3 - user.FailedAttempts.Value;
+                            MessageBox.Show($"Пароль или логин неверный! Осталось попыток до блокировки: {attemptsLeft}");
                         }
+                        return;
+                    }
 
+                    if (user.IsApproved != true)
+                    {
+                        MessageBox.Show("Ваш аккаунт еще не подтвержден администратором. Ожидайте активации.");
+                        return;
+                    }
+
+                    user.FailedAttempts = 0;
+                    user.LockoutEnd = null;
+                    db.SaveChanges();
+
+                    if (user.Role == 1)
+                    {
+                        AdminView adminView = new AdminView();
+                        adminView.Show();
+                    }
+                    else if (user.Role == 2)
+                    {
+                        VisitorView visitorView = new VisitorView();
+                        visitorView.Show();
                     }
                     else
                     {
-                        MessageBox.Show("Пароль или логин неверный!");
+                        MessageBox.Show("Неизвестная роль пользователя в системе.");
+                        return;
                     }
+
+                    this.Close(); // Закрываем форму авторизации после успешного входа
                 }
             }
             catch (ArgumentException ex)

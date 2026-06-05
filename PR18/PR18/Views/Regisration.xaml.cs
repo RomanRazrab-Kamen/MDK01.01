@@ -1,9 +1,15 @@
 ﻿using BCrypt.Net;
+using PR18.Services;
+using System;
 using PR18.Models;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using EasyCaptcha.Wpf;
 
-namespace PR15Hash.Views
+namespace PR18.Views
 {
     /// <summary>
     /// Логика взаимодействия для Regisration.xaml
@@ -11,11 +17,35 @@ namespace PR15Hash.Views
     public partial class Regisration : Window
     {
         private PR18DBEntities _db = new PR18DBEntities();
+        private string _currentCaptchaText = string.Empty;
+        private Random _random = new Random();
         public Regisration()
         {
             InitializeComponent();
         }
+        private void GenerateCaptcha()
+        {
+            try
+            {
+                var captchaProvider = new EasyCaptcha.Wpf.CaptchaControl();
 
+                captchaProvider.CreateCaptcha(EasyCaptcha.Wpf.NoiseLevel.Medium, 6);
+
+                _currentCaptchaText = captchaProvider.CaptchaText;
+
+                CaptchaImage.Source = captchaProvider.CaptchaImage;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Не удалось обновить капчу: {ex.Message}");
+            }
+        }
+
+        private void ButtonUpdateCaptcha_Click(object sender, RoutedEventArgs e)
+        {
+            GenerateCaptcha();
+            TextBoxCaptcha.Text = string.Empty;
+        }
         private void ButtonRegistration_Click(object sender, RoutedEventArgs e)
         {
             if (CheckFields())
@@ -31,7 +61,7 @@ namespace PR15Hash.Views
                     Mail = TextBoxEmail.Text,
                     Password = hashPassword,
                     Login = TextBoxLogin.Text,
-                    Role = 1
+                    Role = 2
                 };
                 _db.User.Add(user);
                 _db.SaveChanges();
