@@ -41,7 +41,6 @@ namespace PR16.View
                     DataGridOrders.ItemsSource = db.Заказ
                         .Include("СтатусЗаказа")
                         .AsEnumerable()
-                        .Where(z => z.Фамилия.Trim() == _currentUser.Фамилия.Trim())
                         .ToList();
                 }
             }
