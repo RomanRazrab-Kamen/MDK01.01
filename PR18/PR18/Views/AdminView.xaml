@@ -4,20 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PR18.Views"
+        xmlns:services="clr-namespace:PR18.Services"
         mc:Ignorable="d"
         Title="Виртуальный зоопарк - Режим Администратора" Height="580" Width="800">
+    <Window.Resources>
+        <services:BytesToImageConverter x:Key="BytesToImageConverter"/>
+    </Window.Resources>
     <Grid>
         <TabControl>
-            <TabItem Header="Обтатели зоопарка">
+            <TabItem Header="Обитатели зоопарка">
                 <Grid>
                     <Grid.ColumnDefinitions >
                         <ColumnDefinition Width ="200"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Margin="5">
-                        <Button Content="Удалить животное" Margin="0,0,0,10"/>
-                        <Button Content="Добавить животное" Margin="0,0,0,10"/>
-                        <Button Content="Изменить животное" Margin="0,0,0,10"/>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Коммандная панель" Margin="10,10,10,10"/>
+                        <Button Content="Удалить животное" Margin="10,0,10,10" Click="Button_DeleteAnimal"/>
+                        <Button Content="Добавить животное" Margin="10,0,10,10" Click="Button_AddAnimal"/>
+                        <Button Content="Изменить животное" Margin="10,0,10,10" Click="Button_EditAnimal"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1">
                         <TextBlock Text="Список животных" Margin="10"/>
@@ -25,7 +30,7 @@
                             Name="AnimalsListBox" 
                             Margin="10" 
                             BorderThickness="0"
-                            Height="350"
+                            Height="400"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
                             <ListBox.ItemsPanel>
@@ -41,9 +46,10 @@
                                             BorderThickness="2" 
                                             CornerRadius="8" 
                                             Height="140" 
-                                            Background="White"
-                                            ClipToBounds="True">
-                                            <Image Source="{Binding ImagePath}" Stretch="UniformToFill"/>
+                                            Background="White">
+                                            <Image 
+                                                Source="{Binding Image, 
+                                                Converter={StaticResource BytesToImageConverter}}"/>
                                         </Border>
 
                                         <TextBlock Text="{Binding Name}" 

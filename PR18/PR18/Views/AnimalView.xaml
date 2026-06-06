@@ -5,8 +5,73 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PR18.Views"
         mc:Ignorable="d"
-        Title="AnimalView" Height="450" Width="800">
+        Title="Информация о животном" Height="500" Width="850"
+        WindowStartupLocation="CenterScreen" Background="#F9F9F9">
+
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="{Binding Name}" 
+                   FontSize="28" 
+                   FontWeight="Bold" 
+                   Foreground="#333333"
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"
+                   TextWrapping="Wrap"/>
+
+        <Grid Grid.Row="1" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Margin="10">
+                <Image x:Name="AnimalImage" Stretch="Uniform" Margin="10"/>
+
+                <TextBlock Text="Нет изображения" 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center" 
+                            Foreground="Gray" 
+                            FontSize="16">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=AnimalImage, Path=Source}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+           
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="10">
+                <StackPanel Margin="10,0,5,0">
+
+                    <TextBlock Text="Описание:" FontSize="16" FontWeight="Bold" Foreground="#555555" Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding Description}" FontSize="14" TextWrapping="Wrap" Margin="0,0,0,20" Foreground="#222222"/>
+
+                    <TextBlock Text="Интересные факты:" FontSize="16" FontWeight="Bold" Foreground="#555555" Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding InterestingFacts}" FontSize="14" TextWrapping="Wrap" Margin="0,0,0,10" Foreground="#222222"/>
+
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Закрыть" 
+                    Width="120" 
+                    Height="35" 
+                    Background="#76E383" 
+                    BorderThickness="0"
+                    FontSize="14" 
+                    Cursor="Hand"
+                    Click="ButtonClose_Click"/>
+        </StackPanel>
     </Grid>
 </Window>

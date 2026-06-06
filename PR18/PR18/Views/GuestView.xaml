@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PR18.Views"
+        xmlns:services="clr-namespace:PR18.Services"
         mc:Ignorable="d"
         Title="Виртуальный зоопарк — Режим Гостя" 
         Height="450" Width="800"
