@@ -20,5 +20,10 @@
             <Setter Property="Padding" Value="10,5"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextElement.FontFamily" Value="Comic Sans MS"/>
+            <Setter Property="TextElement.FontSize" Value="14"/>
+        </Style>
+
     </Application.Resources>
 </Application>

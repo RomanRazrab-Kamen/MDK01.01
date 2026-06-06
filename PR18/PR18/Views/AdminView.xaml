@@ -5,8 +5,65 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PR18.Views"
         mc:Ignorable="d"
-        Title="AdminView" Height="450" Width="800">
+        Title="Виртуальный зоопарк - Режим Администратора" Height="580" Width="800">
     <Grid>
-        
+        <TabControl>
+            <TabItem Header="Обтатели зоопарка">
+                <Grid>
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width ="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="5">
+                        <Button Content="Удалить животное" Margin="0,0,0,10"/>
+                        <Button Content="Добавить животное" Margin="0,0,0,10"/>
+                        <Button Content="Изменить животное" Margin="0,0,0,10"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Список животных" Margin="10"/>
+                        <ListBox Grid.Row="1" 
+                            Name="AnimalsListBox" 
+                            Margin="10" 
+                            BorderThickness="0"
+                            Height="350"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel IsItemsHost="True" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="15" Width="160">
+                                        <Border BorderBrush="#498C51" 
+                                            BorderThickness="2" 
+                                            CornerRadius="8" 
+                                            Height="140" 
+                                            Background="White"
+                                            ClipToBounds="True">
+                                            <Image Source="{Binding ImagePath}" Stretch="UniformToFill"/>
+                                        </Border>
+
+                                        <TextBlock Text="{Binding Name}" 
+                                           FontWeight="Bold" 
+                                           HorizontalAlignment="Center" 
+                                           Margin="0,8,0,0" 
+                                           FontSize="15"
+                                           TextWrapping="Wrap"
+                                           TextAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Пользователи">
+
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

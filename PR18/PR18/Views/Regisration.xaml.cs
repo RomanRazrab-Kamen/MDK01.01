@@ -1,13 +1,14 @@
 ﻿using BCrypt.Net;
+using EasyCaptcha;
+using EasyCaptcha.Wpf;
+using PR18.Models;
 using PR18.Services;
 using System;
-using PR18.Models;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using EasyCaptcha.Wpf;
 
 namespace PR18.Views
 {
@@ -18,22 +19,21 @@ namespace PR18.Views
     {
         private PR18DBEntities _db = new PR18DBEntities();
         private string _currentCaptchaText = string.Empty;
-        private Random _random = new Random();
         public Regisration()
         {
             InitializeComponent();
+            GenerateCaptcha();
         }
         private void GenerateCaptcha()
         {
             try
             {
-                var captchaProvider = new EasyCaptcha.Wpf.CaptchaControl();
+                if (MyCaptcha != null)
+                {
+                    MyCaptcha.CreateCaptcha(EasyCaptcha.Wpf.Captcha.LetterOption.Alphanumeric, 6);
 
-                captchaProvider.CreateCaptcha(EasyCaptcha.Wpf.NoiseLevel.Medium, 6);
-
-                _currentCaptchaText = captchaProvider.CaptchaText;
-
-                CaptchaImage.Source = captchaProvider.CaptchaImage;
+                    _currentCaptchaText = MyCaptcha.CaptchaText;
+                }
             }
             catch (Exception ex)
             {
@@ -61,7 +61,9 @@ namespace PR18.Views
                     Mail = TextBoxEmail.Text,
                     Password = hashPassword,
                     Login = TextBoxLogin.Text,
-                    Role = 2
+                    Role = 2,
+                    FailedAttempts = 0,
+
                 };
                 _db.User.Add(user);
                 _db.SaveChanges();
@@ -134,6 +136,12 @@ namespace PR18.Views
             if (TextBoxPassword.Text != TextBoxConfirmPassword.Text)
             {
                 MessageBox.Show("Пароли не совпадают");
+                return false;
+            }
+            if (TextBoxCaptcha.Text != _currentCaptchaText)
+            {
+                MessageBox.Show("Капча введена не верно!");
+                GenerateCaptcha();
                 return false;
             }
 

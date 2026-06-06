@@ -69,7 +69,7 @@ namespace PR18.Views
                         {
                             user.LockoutEnd = DateTime.Now.AddMinutes(3);
                             db.SaveChanges();
-                            MessageBox.Show("Вы ввели неправильный пароль 3 раза. Ввод заблокирован на 3 минуты!");
+                            MessageBox.Show("Вы ввели неправильный пароль 3 раза. Вход заблокирован на 3 минуты!");
                         }
                         else
                         {

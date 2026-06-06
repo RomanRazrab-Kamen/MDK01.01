@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PR18.Views"
+        xmlns:local="clr-namespace:PR18.Views" 
+        xmlns:captcha="clr-namespace:EasyCaptcha.Wpf;assembly=EasyCaptcha.Wpf"
         mc:Ignorable="d"
         Title="Регистрация" 
         Height="840" 
@@ -30,14 +31,13 @@
             <TextBlock Text="Подтвердите пароль" Margin="10,10,10,0"/>
             <TextBox Name="TextBoxConfirmPassword" MaxLength="255"  Margin="10"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
-                <captcha:CaptchaControl Name="MyCaptcha" Width="150" Height="50"/>
+                <captcha:Captcha x:Name="MyCaptcha" Width="150" Height="50"/>
 
-                <Button Content="🔄" Width="40" Height="40" Margin="10,0,0,0" 
-                    Background="#76E383" Click="ButtonUpdateCaptcha_Click" FontSize="18"/>
+                <Button Content="New chapcha" Width="140" Height="40" Margin="10,0,0,0" 
+                    Background="#76E383" 
+                    Click="ButtonUpdateCaptcha_Click" 
+                    FontSize="18"/>
             </StackPanel>
-
-            <TextBlock Text="Введите код с картинки:" HorizontalAlignment="Center"/>
-            <TextBox Name="TextBoxCaptcha" Width="200" HorizontalAlignment="Center" Margin="0,5,0,10"/>
 
             <TextBlock Text="Введите код с картинки:" HorizontalAlignment="Center"/>
             <TextBox Name="TextBoxCaptcha" Width="200" HorizontalAlignment="Center" Margin="0,5,0,10"/>
