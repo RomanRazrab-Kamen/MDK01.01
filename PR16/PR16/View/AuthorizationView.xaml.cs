@@ -13,33 +13,37 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PR16.View;
 
 namespace PR16.View
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для AuthorizationView.xaml
     /// </summary>
-    public partial class Authorization : Window
+    public partial class AuthorizationView : Window
     {
-        public Authorization()
+        public AuthorizationView()
         {
             InitializeComponent();
         }
 
-        private void ButtonRegistration_Click(object sender, RoutedEventArgs e)
+        private void ButtonRegistrationClick(object sender, RoutedEventArgs e)
         {
-            Regisration regisration = new Regisration();
+            // ИСПРАВЛЕНО: Изменено имя класса на RegisrationView
+            RegisrationView regisration = new RegisrationView();
             regisration.Show();
             this.Close();
         }
 
-        private void ButtonAuthorization_Click(object sender, RoutedEventArgs e)
+        private void ButtonAuthorizationClick(object sender, RoutedEventArgs e)
         {
             try
             {
                 using (var db = new PR16DBEntities())
                 {
-                    Сотрудник user = db.Сотрудник.FirstOrDefault(x => x.Логин == TextBoxLogin.Text);
+                    Сотрудник user = db.Сотрудник
+                        .Include("Роль")
+                        .FirstOrDefault(x => x.Логин == TextBoxLogin.Text);
 
                     if (user != null)
                     {
@@ -47,28 +51,35 @@ namespace PR16.View
 
                         if (succsedHashPassword)
                         {
-                            if(user.Роль.Наименование == "Авторизированный клиент")
+                            if (user.Роль != null)
                             {
-                                AuthorizedClient authorizedClient = new AuthorizedClient(user);
-                                authorizedClient.Show();
-                                this.Close();
+                                if (user.Роль.Наименование == "Авторизированный клиент")
+                                {
+                                    AuthorizedClientView authorizedClient = new AuthorizedClientView(user);
+                                    authorizedClient.Show();
+                                    this.Close();
+                                }
+                                else if (user.Роль.Наименование == "Менеджер" || user.Роль.Наименование == "Администратор")
+                                {
+                                    // Открываем StoreView. Имя класса совпадает со скриншотом структуры
+                                    StoreView storeView = new StoreView(user);
+                                    storeView.Show();
+                                    this.Close();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("У вашей роли нет доступа к системе.");
+                                }
                             }
-                            if (user.Роль.Наименование == "Менеджер")
+                            else
                             {
-
-                            }
-                            if (user.Роль.Наименование == "Администратор")
-                            {
-                                AdminView admin = new AdminView(user);
-                                admin.Show();
-                                this.Close();
+                                MessageBox.Show("Ошибка: Пользователю не назначена роль в базе данных.");
                             }
                         }
                         else
                         {
                             MessageBox.Show("Пароль или логин неверный!");
                         }
-
                     }
                     else
                     {
@@ -76,10 +87,19 @@ namespace PR16.View
                     }
                 }
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка: {ex.Message}");
+                MessageBox.Show($"Ошибка при авторизации: {ex.Message}");
             }
+        }
+
+        // ДОБАВЛЕНО: Кнопка для входа в режиме Гостя (согласно ТЗ вашей практической работы)
+        private void ButtonGuestClick(object sender, RoutedEventArgs e)
+        {
+            // Передаем null вместо пользователя — окно само скроет вкладку заказов
+            AuthorizedClientView guestClient = new AuthorizedClientView(null);
+            guestClient.Show();
+            this.Close();
         }
     }
 }

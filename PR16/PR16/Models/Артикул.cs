@@ -22,7 +22,7 @@ namespace PR16.Models
         }
     
         public int Код { get; set; }
-        public string Артикул1 { get; set; }
+        public string Наименование { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<СписокЗаказов> СписокЗаказов { get; set; }

@@ -1,4 +1,4 @@
-﻿<Window x:Class="PR16.View.AuthorizedClient"
+﻿<Window x:Class="PR16.View.AuthorizedClientView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PR16.View"
         xmlns:services="clr-namespace:PR16.Services"
         mc:Ignorable="d"
-        Title="AuthorizedClient" Height="450" Width="800">
+        Title="AuthorizedClient" Height="450" Width="800" Loaded="WindowLoaded">
 
     <Window.Resources>
         <services:PriceColorConverter x:Key="PriceColorConverter"/>
@@ -15,38 +15,76 @@
     <Grid>
         <TabControl>
             <TabItem Header="Товары">
-                <DataGrid Name="DataGridProducts" AutoGenerateColumns="False" IsReadOnly="True" Margin="10" CanUserSortColumns="False">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Код" Binding="{Binding Код}" Width="50"/>
-                        <DataGridTextColumn Header="Описание" Binding="{Binding Описание_товара}" Width="*"/>
-                        <DataGridTextColumn Header="Кол-во на складе" Binding="{Binding Кол_во_на_складе}" Width="120"/>
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
 
-                        <DataGridTextColumn Header="Тип товара" Binding="{Binding ТипТовара.Тип_товара}" Width="120"/>
-                        <DataGridTextColumn Header="Производитель" Binding="{Binding Производитель1.Наименование}" Width="120"/>
+                    <Grid Grid.Column="0" Margin="0,0,10,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DataGrid Name="DataGridProducts" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False" MouseDoubleClick="DataGridProductsMouseDoubleClick">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Код" Binding="{Binding Код}" Width="50"/>
+                                <DataGridTextColumn Header="Описание" Binding="{Binding ОписаниеТовара}" Width="*"/>
+                               <DataGridTextColumn Header="Кол-во" Binding="{Binding КолВоНаСкладе}" Width="70"/>
+                                <DataGridTextColumn Header="Тип товара" Binding="{Binding ТипТовара.Типтовара}" Width="100"/>
+                                <DataGridTextColumn Header="Производитель" Binding="{Binding Производитель1.Наименование}" Width="110"/>
+                                <DataGridTextColumn Header="Цена" Binding="{Binding Цена}" Width="80">
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="Background" Value="{Binding Цена, Converter={StaticResource PriceColorConverter}}"/>
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
 
-                        <DataGridTextColumn Header="Цена" Binding="{Binding Цена}" Width="100">
-                            <DataGridTextColumn.CellStyle>
-                                <Style TargetType="DataGridCell">
-                                    <Setter Property="Background" Value="{Binding Цена, Converter={StaticResource PriceColorConverter}}"/>
-                                </Style>
-                            </DataGridTextColumn.CellStyle>
-                        </DataGridTextColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Корзина" FontSize="14" FontWeight="Bold" Margin="0,0,0,5"/>
+
+                        <ListBox Name="ListBoxCart" Grid.Row="1" DisplayMemberPath="ОписаниеТовара">
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Удалить товар" Click="MenuDeleteFromCartClick"/>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                        </ListBox>
+
+                        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,10">
+                            <TextBlock Text="Итого: " FontSize="14"/>
+                            <TextBlock Name="TextBlockTotal" Text="0" FontSize="14" FontWeight="Bold"/>
+                            <TextBlock Text=" руб." FontSize="14"/>
+                        </StackPanel>
+
+                        <Button Name="ButtonCheckout" Grid.Row="3" Content="Оформить заказ" Height="35" Background="LightBlue" FontWeight="Bold" Click="ButtonCheckoutClick"/>
+                    </Grid>
+                </Grid>
             </TabItem>
             <TabItem Header="Заказы">
                 <DataGrid Name="DataGridOrders" AutoGenerateColumns="False" IsReadOnly="True" Margin="10" CanUserSortColumns="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Номер заказа" Binding="{Binding Код}" Width="100"/>
-                        <DataGridTextColumn Header="Дата заказа" Binding="{Binding Дата_заказа, StringFormat=\{0:dd.MM.yyyy\}}" Width="130"/>
-                        <DataGridTextColumn Header="Пункт выдачи" Binding="{Binding Код_для_получения}" Width="150"/>
+                        <DataGridTextColumn Header="Дата заказа" Binding="{Binding ДатаЗаказа, StringFormat=\{0:dd.MM.yyyy\}}" Width="130"/>
+                        <DataGridTextColumn Header="Пункт выдачи" Binding="{Binding КодДляПолучения}" Width="150"/>
                         <DataGridTextColumn Header="Статус" Binding="{Binding СтатусЗаказа.Наименование}" Width="150"/>
 
                         <DataGridTemplateColumn Width="130">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Content="Отменить заказ" 
-                                            Click="ButtonCancelOrder_Click" 
+                                            Click="ButtonCancelOrderClick" 
                                             Background="LightCoral" 
                                             Cursor="Hand"/>
                                 </DataTemplate>

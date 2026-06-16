@@ -16,21 +16,21 @@ namespace PR16.Models
     {
         public int Код { get; set; }
         public Nullable<int> Артикул { get; set; }
-        public Nullable<int> Тип_товара { get; set; }
-        public Nullable<int> Единица_измерения { get; set; }
-        public Nullable<int> Цена { get; set; }
+        public Nullable<int> ТипТовара { get; set; }
+        public Nullable<int> ЕдиницаИзмерения { get; set; }
+        public Nullable<decimal> Цена { get; set; }
         public Nullable<int> Поставщик { get; set; }
         public Nullable<int> Производитель { get; set; }
-        public Nullable<int> Категория_товара { get; set; }
-        public Nullable<int> Действующая_скидка { get; set; }
-        public Nullable<int> Кол_во_на_складе { get; set; }
-        public string Описание_товара { get; set; }
+        public Nullable<int> КатегорияТовара { get; set; }
+        public Nullable<decimal> ДействующаяСкидка { get; set; }
+        public Nullable<int> КолВоНаСкладе { get; set; }
+        public string ОписаниеТовара { get; set; }
     
         public virtual Артикул Артикул1 { get; set; }
-        public virtual ЕдиницыИзмерения ЕдиницыИзмерения { get; set; }
-        public virtual КатегорияТовара КатегорияТовара { get; set; }
+        public virtual ЕдининицыИзмерения ЕдининицыИзмерения { get; set; }
+        public virtual КатегорияТовара КатегорияТовара1 { get; set; }
         public virtual Поставщик Поставщик1 { get; set; }
         public virtual Производитель Производитель1 { get; set; }
-        public virtual ТипТовара ТипТовара { get; set; }
+        public virtual ТипТовара ТипТовара1 { get; set; }
     }
 }

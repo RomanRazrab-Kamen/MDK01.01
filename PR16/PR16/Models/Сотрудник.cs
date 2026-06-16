@@ -14,11 +14,11 @@ namespace PR16.Models
     
     public partial class Сотрудник
     {
-        public Nullable<int> Роль_сотрудника { get; set; }
+        public string Логин { get; set; }
+        public Nullable<int> РольСотрудника { get; set; }
         public string Фамилия { get; set; }
         public string Имя { get; set; }
         public string Отчество { get; set; }
-        public string Логин { get; set; }
         public string Пароль { get; set; }
     
         public virtual Роль Роль { get; set; }

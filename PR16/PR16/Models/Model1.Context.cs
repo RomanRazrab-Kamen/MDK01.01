@@ -26,7 +26,7 @@ namespace PR16.Models
         }
     
         public virtual DbSet<Артикул> Артикул { get; set; }
-        public virtual DbSet<ЕдиницыИзмерения> ЕдиницыИзмерения { get; set; }
+        public virtual DbSet<ЕдининицыИзмерения> ЕдининицыИзмерения { get; set; }
         public virtual DbSet<Заказ> Заказ { get; set; }
         public virtual DbSet<КатегорияТовара> КатегорияТовара { get; set; }
         public virtual DbSet<Поставщик> Поставщик { get; set; }

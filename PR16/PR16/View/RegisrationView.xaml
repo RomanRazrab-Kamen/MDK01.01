@@ -1,4 +1,4 @@
-﻿<Window x:Class="PR16.View.Regisration"
+﻿<Window x:Class="PR16.View.RegisrationView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -26,8 +26,8 @@
             <TextBlock Text="Подтвердите пароль" Margin="10,10,10,0"/>
             <TextBox Name="TextBoxConfirmPassword" MaxLength="255"  Margin="10"/>
             <StackPanel Orientation="Horizontal">
-                <Button Name="ButtonAuthorization" Content="Авторизация" Margin="10" Height="30" Width="150" Click="ButtonAuthorization_Click"/>
-                <Button Name="ButtonRegistration" Content="Зарегистрироватся" Margin="20,0,0,0" Height="30" Width="150" Click="ButtonRegistration_Click"/>
+                <Button Name="ButtonAuthorization" Content="Авторизация" Margin="10" Height="30" Width="150" Click="ButtonAuthorizationClick"/>
+                <Button Name="ButtonRegistration" Content="Зарегистрироватся" Margin="20,0,0,0" Height="30" Width="150" Click="ButtonRegistrationClick"/>
             </StackPanel>
         </StackPanel>
     </Grid>

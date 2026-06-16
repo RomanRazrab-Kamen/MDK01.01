@@ -1,6 +1,8 @@
 ﻿using PR16.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,15 +20,132 @@ namespace PR16.View
     /// <summary>
     /// Логика взаимодействия для AuthorizedClient.xaml
     /// </summary>
-    public partial class AuthorizedClient : Window
+    public partial class AuthorizedClientView : Window
     {
-        private Сотрудник _currentUser;
+        private Сотрудник currentUser;
 
-        public AuthorizedClient(Сотрудник user)
+        public ObservableCollection<Товар> Cart { get; set; } = new ObservableCollection<Товар>();
+
+        public AuthorizedClientView(Сотрудник user)
         {
             InitializeComponent();
-            _currentUser = user;
+            currentUser = user;
+            ListBoxCart.ItemsSource = Cart;
+        }
+
+        private void WindowLoaded(object sender, RoutedEventArgs e)
+        {
+            if (currentUser == null)
+            {
+                ButtonCheckout.IsEnabled = false;
+                ButtonCheckout.Content = "Оформить (Доступно клиентам)";
+            }
             RefreshData();
+        }
+        private void DataGridProductsMouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var selectedProduct = DataGridProducts.SelectedItem as Товар;
+            if (selectedProduct == null) return;
+
+            if (selectedProduct.КолВоНаСкладе <= 0)
+            {
+                MessageBox.Show("Данного товара нет в наличии на складе!");
+                return;
+            }
+
+            Cart.Add(selectedProduct);
+            UpdateTotalSum();
+        }
+
+        private void MenuDeleteFromCartClick(object sender, RoutedEventArgs e)
+        {
+            var selectedProduct = ListBoxCart.SelectedItem as Товар;
+            if (selectedProduct == null) return;
+
+            Cart.Remove(selectedProduct);
+            UpdateTotalSum();
+        }
+
+        public decimal CalculateTotal(IEnumerable<Товар> items)
+        {
+            if (items == null || !items.Any()) return 0;
+
+            return items.Sum(t =>
+            {
+                decimal price = t.Цена ?? 0;
+                decimal discountPercent = t.ДействующаяСкидка ?? 0;
+                return price * (1 - (discountPercent / 100));
+            });
+        }
+
+        private void UpdateTotalSum()
+        {
+            decimal total = CalculateTotal(Cart);
+            TextBlockTotal.Text = total.ToString("N2");
+        }
+
+        private void ButtonCheckoutClick(object sender, RoutedEventArgs e)
+        {
+            if (Cart.Count == 0)
+            {
+                MessageBox.Show("Ваша корзина пуста!");
+                return;
+            }
+
+            try
+            {
+                using (var db = new PR16DBEntities())
+                {
+                    var newOrder = new Заказ
+                    {
+                        ДатаЗаказа = DateTime.Now,
+                        Фамилия = currentUser.Фамилия,
+                        Имя = currentUser.Имя,
+                        Отчество = currentUser.Отчество,
+                        КодДляПолучения = new Random().Next(100, 999),
+                        СтатусЗаказа = db.СтатусЗаказа.FirstOrDefault(s => s.Наименование == "Новый")?.Код ?? 1
+                    };
+
+                    db.Заказ.Add(newOrder);
+                    db.SaveChanges();
+
+                    var groupedCart = Cart.GroupBy(t => t.Артикул);
+
+                    foreach (var group in groupedCart)
+                    {
+                        int productArtId = group.Key ?? 1;
+                        int countInCart = group.Count();
+
+                        var dbProduct = db.Товар.FirstOrDefault(t => t.Артикул == productArtId);
+                        if (dbProduct == null || dbProduct.КолВоНаСкладе < countInCart)
+                        {
+                            MessageBox.Show($"Недостаточно товара на складе для позиции!");
+                            return;
+                        }
+
+                        dbProduct.КолВоНаСкладе -= countInCart;
+
+                        var orderPos = new СписокЗаказов
+                        {
+                            КодЗаказа = newOrder.Код,
+                            КодАртикула = productArtId,
+                            Количество = countInCart
+                        };
+                        db.СписокЗаказов.Add(orderPos);
+                    }
+
+                    db.SaveChanges();
+                    MessageBox.Show($"Заказ №{newOrder.Код} успешно оформлен! Код получения: {newOrder.КодДляПолучения}");
+
+                    Cart.Clear();
+                    UpdateTotalSum();
+                    RefreshData();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка оформления заказа: {ex.Message}");
+            }
         }
 
         private void RefreshData()
@@ -36,13 +155,14 @@ namespace PR16.View
                 using (var db = new PR16DBEntities())
                 {
                     DataGridProducts.ItemsSource = db.Товар
-                        .Include("ТипТовара")
+                        .Include("ТипТовара1")
                         .Include("Производитель1")
+                        .Include("Артикул1")
                         .ToList();
 
                     DataGridOrders.ItemsSource = db.Заказ
-                        .Include("СтатусЗаказа")
-                        .Where(z => z.Фамилия == _currentUser.Фамилия)
+                        .Include("СтатусЗаказа1")
+                        .Where(z => z.Фамилия == currentUser.Фамилия)
                         .ToList();
                 }
             }
@@ -50,72 +170,9 @@ namespace PR16.View
             {
                 MessageBox.Show($"Ошибка загрузки данных: {ex.Message}");
             }
-            //try
-            //{
-            //    // Создаем контекст без using, чтобы WPF успел прочитать данные
-            //    var db = new PR16DBEntities();
-
-            //    // 1. Проверяем товары
-            //    var productsList = db.Товар
-            //        .Include("ТипТовара")
-            //        .Include("Производитель1")
-            //        .ToList();
-
-            //    DataGridProducts.ItemsSource = productsList;
-
-            //    // Отладочное сообщение для товаров
-            //    if (productsList.Count == 0)
-            //    {
-            //        MessageBox.Show("В таблице 'Товар' в базе данных нет записей!");
-            //    }
-
-            //    // 2. Проверяем пользователя и заказы
-            //    if (_currentUser == null)
-            //    {
-            //        MessageBox.Show("Ошибка: _currentUser равен null! Авторизация не выполнена.");
-            //        return;
-            //    }
-
-            //    if (string.IsNullOrWhiteSpace(_currentUser.Фамилия))
-            //    {
-            //        MessageBox.Show("Ошибка: У текущего пользователя пустая фамилия!");
-            //        return;
-            //    }
-
-            //    // Очищаем фамилию от возможных пробелов (для типов данных CHAR в БД)
-            //    string searchLastName = _currentUser.Фамилия.Trim();
-
-            //    // Загружаем все заказы, чтобы проверить их наличие
-            //    var allOrders = db.Заказ.Include("СтатусЗаказа").ToList();
-
-            //    // Фильтруем заказы в памяти C# с игнорированием регистра и пробелов
-            //    var filteredOrders = allOrders
-            //        .Where(z => z.Фамилия != null && z.Фамилия.Trim().Equals(searchLastName, StringComparison.OrdinalIgnoreCase))
-            //        .ToList(); // ВНИМАНИЕ: Проверьте, как в вашей модели называется свойство Фамилия (может быть 'Фамилия' или транслит)
-
-            //    DataGridOrders.ItemsSource = filteredOrders;
-
-            //    // Если в базе заказы есть, но фильтр их отсек, выводим подсказку
-            //    if (allOrders.Count > 0 && filteredOrders.Count == 0)
-            //    {
-            //        string availableNames = string.Join(", ", allOrders.Select(o => $"'{o.Фамилия}'").Distinct().Take(3));
-            //        MessageBox.Show($"Заказы в БД есть ({allOrders.Count} шт.), но ни один не подошел под фамилию '{searchLastName}'.\n" +
-            //                        $"Примеры фамилий в БД: {availableNames}");
-            //    }
-            //    else if (allOrders.Count == 0)
-            //    {
-            //        MessageBox.Show("В таблице 'Заказ' в базе данных вообще нет записей!");
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    // Выводим полную информацию, включая внутреннее исключение базы данных
-            //    string inner = ex.InnerException != null ? $"\nВнутренняя ошибка: {ex.InnerException.Message}" : "";
-            //    MessageBox.Show($"Ошибка загрузки данных: {ex.Message}{inner}");
-            //}
         }
 
-        private void ButtonCancelOrder_Click(object sender, RoutedEventArgs e)
+        private void ButtonCancelOrderClick(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var currentOrder = button?.DataContext as Заказ;

@@ -1,5 +1,7 @@
 ﻿using BCrypt.Net;
 using PR16.Models;
+using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 
@@ -8,41 +10,61 @@ namespace PR16.View
     /// <summary>
     /// Логика взаимодействия для Regisration.xaml
     /// </summary>
-    public partial class Regisration : Window
+    public partial class RegisrationView : Window
     {
-        private PR16DBEntities _db = new PR16DBEntities();
-        public Regisration()
+        public RegisrationView()
         {
             InitializeComponent();
         }
 
-        private void ButtonRegistration_Click(object sender, RoutedEventArgs e)
+        private void ButtonRegistrationClick(object sender, RoutedEventArgs e)
         {
             if (CheckFields())
             {
-                string password = TextBoxPassword.Text;
-                string hashPassword = BCrypt.Net.BCrypt.HashPassword(password);
-               
-                var user = new Сотрудник
+                try
                 {
-                    Имя = TextBoxName.Text,
-                    Фамилия = TextBoxSurname.Text,
-                    Отчество = TextBoxPatronymic.Text,
-                    Пароль = hashPassword,
-                    Логин = TextBoxLogin.Text,
+                    using (var db = new PR16DBEntities())
+                    {
+                        bool loginExists = db.Сотрудник.Any(x => x.Логин == TextBoxLogin.Text.Trim());
+                        if (loginExists)
+                        {
+                            MessageBox.Show("Пользователь с таким логином уже зарегистрирован!");
+                            return;
+                        }
 
-                };
-                _db.Сотрудник.Add(user);
-                _db.SaveChanges();
+                        var clientRole = db.Роль.FirstOrDefault(r => r.Наименование == "Авторизированный клиент");
+                        string password = TextBoxPassword.Text;
+                        string hashPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
-                Authorization authorization = new Authorization();
-                authorization.Show();
-                this.Close();
+                        var user = new Сотрудник
+                        {
+                            Имя = TextBoxName.Text.Trim(),
+                            Фамилия = TextBoxSurname.Text.Trim(),
+                            Отчество = string.IsNullOrWhiteSpace(TextBoxPatronymic.Text) ? null : TextBoxPatronymic.Text.Trim(),
+                            Пароль = hashPassword,
+                            Логин = TextBoxLogin.Text.Trim(),
+                            РольСотрудника = clientRole.Код
+                        };
+
+                        db.Сотрудник.Add(user);
+                        db.SaveChanges();
+
+                        MessageBox.Show("Регистрация успешно завершена!");
+
+                        AuthorizationView authorizationView = new AuthorizationView();
+                        authorizationView.Show();
+                        this.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при сохранении данных: {ex.Message}");
+                }
             }
         }
+
         public bool CheckFields()
         {
-            //Поля ФИО
             if (string.IsNullOrWhiteSpace(TextBoxSurname.Text))
             {
                 MessageBox.Show("Введите фамилию");
@@ -55,10 +77,8 @@ namespace PR16.View
                 return false;
             }
 
-            //Логин
             if (!string.IsNullOrWhiteSpace(TextBoxLogin.Text))
             {
-                
                 bool isValid = Services.Validation.CheckLogin(TextBoxLogin.Text);
                 if (!isValid)
                 {
@@ -71,13 +91,12 @@ namespace PR16.View
                 return false;
             }
 
-            //Пароль
             if (!string.IsNullOrWhiteSpace(TextBoxPassword.Text))
             {
                 bool isValid = Services.Validation.CheckPassword(TextBoxPassword.Text);
                 if (!isValid)
                 {
-                    MessageBox.Show("Пароль не менее 8 символов,  пароль должен содержать хотя бы одну заглавную букву, одну строчную и одну цифру!");
+                    MessageBox.Show("Пароль не менее 8 символов, пароль должен содержать хотя бы одну заглавную букву, одну строчную и одну цифру!");
                     return false;
                 }
             }
@@ -96,9 +115,9 @@ namespace PR16.View
             return true;
         }
 
-        private void ButtonAuthorization_Click(object sender, RoutedEventArgs e)
+        private void ButtonAuthorizationClick(object sender, RoutedEventArgs e)
         {
-            Authorization authorization = new Authorization();
+            AuthorizationView authorization = new AuthorizationView();
             authorization.Show();
             this.Close();
         }

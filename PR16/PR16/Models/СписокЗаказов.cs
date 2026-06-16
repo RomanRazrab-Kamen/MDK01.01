@@ -15,7 +15,7 @@ namespace PR16.Models
     public partial class СписокЗаказов
     {
         public int Код { get; set; }
-        public int КодАртикула { get; set; }
+        public Nullable<int> КодАртикула { get; set; }
         public Nullable<int> КодЗаказа { get; set; }
         public Nullable<int> Количество { get; set; }
     

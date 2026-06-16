@@ -21,7 +21,7 @@ namespace PR16.Models
         }
     
         public int Код { get; set; }
-        public string Тип_товара { get; set; }
+        public string ТипТовара1 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Товар> Товар { get; set; }

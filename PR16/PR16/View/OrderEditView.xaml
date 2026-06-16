@@ -1,0 +1,37 @@
+﻿<Window x:Class="PR16.View.OrderEditView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PR16.View"
+        mc:Ignorable="d"
+        Title="Управление заказом" Height="350" Width="350" WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Name="TextBlockHeader" Text="Создание нового заказа" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="Фамилия клиента:" Margin="0,5,0,2"/>
+            <TextBox Name="TextBoxLastName"/>
+
+            <TextBlock Text="Имя клиента:" Margin="0,5,0,2"/>
+            <TextBox Name="TextBoxFirstName"/>
+
+            <TextBlock Text="Пункт выдачи (код):" Margin="0,5,0,2"/>
+            <TextBox Name="TextBoxPickupCode"/>
+
+            <TextBlock Text="Статус заказа:" Margin="0,5,0,2"/>
+            <ComboBox Name="ComboStatus" DisplayMemberPath="Наименование"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button Content="Сохранить" Name="ButtonSave" Width="100" Margin="0,0,10,0" Background="LightGreen" Click="ButtonSaveClick"/>
+            <Button Content="Отмена" Name="ButtonCancel" Width="100" Background="LightGray" Click="ButtonCancelClick"/>
+        </StackPanel>
+    </Grid>
+</Window>

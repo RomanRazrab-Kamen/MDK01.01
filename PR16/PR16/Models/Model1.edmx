@@ -4,70 +4,70 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище PR16DBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище PR16DBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Артикул">
           <Key>
             <PropertyRef Name="Код" />
           </Key>
           <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Артикул" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Наименование" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <EntityType Name="ЕдиницыИзмерения">
+        <EntityType Name="ЕдининицыИзмерения">
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="int" Nullable="false" />
+          <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Наименование" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Заказ">
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="int" Nullable="false" />
-          <Property Name="Дата заказа" Type="datetime" />
+          <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ДатаЗаказа" Type="datetime" />
           <Property Name="Фамилия" Type="nvarchar" MaxLength="255" />
           <Property Name="Имя" Type="nvarchar" MaxLength="255" />
           <Property Name="Отчество" Type="nvarchar" MaxLength="255" />
-          <Property Name="Код для получения" Type="int" />
-          <Property Name="Статус заказа" Type="int" />
+          <Property Name="КодДляПолучения" Type="int" />
+          <Property Name="СтатусЗаказа" Type="int" />
         </EntityType>
         <EntityType Name="КатегорияТовара">
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="int" Nullable="false" />
+          <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Наименование" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Поставщик">
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="int" Nullable="false" />
+          <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Наименование" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Производитель">
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="int" Nullable="false" />
+          <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Наименование" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Роль">
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="int" Nullable="false" />
+          <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Наименование" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Сотрудник">
           <Key>
             <PropertyRef Name="Логин" />
           </Key>
-          <Property Name="Роль сотрудника" Type="int" />
+          <Property Name="Логин" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="РольСотрудника" Type="int" />
           <Property Name="Фамилия" Type="nvarchar" MaxLength="255" />
           <Property Name="Имя" Type="nvarchar" MaxLength="255" />
           <Property Name="Отчество" Type="nvarchar" MaxLength="255" />
-          <Property Name="Логин" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Пароль" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="СписокЗаказов">
@@ -75,7 +75,7 @@
             <PropertyRef Name="Код" />
           </Key>
           <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="КодАртикула" Type="int" Nullable="false" />
+          <Property Name="КодАртикула" Type="int" />
           <Property Name="КодЗаказа" Type="int" />
           <Property Name="Количество" Type="int" />
         </EntityType>
@@ -83,7 +83,7 @@
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="int" Nullable="false" />
+          <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Наименование" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="ТипТовара">
@@ -91,7 +91,7 @@
             <PropertyRef Name="Код" />
           </Key>
           <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Тип товара" Type="nvarchar" MaxLength="255" />
+          <Property Name="ТипТовара" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Товар">
           <Key>
@@ -99,15 +99,15 @@
           </Key>
           <Property Name="Код" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Артикул" Type="int" />
-          <Property Name="Тип товара" Type="int" />
-          <Property Name="Единица измерения" Type="int" />
-          <Property Name="Цена" Type="int" />
+          <Property Name="ТипТовара" Type="int" />
+          <Property Name="ЕдиницаИзмерения" Type="int" />
+          <Property Name="Цена" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Поставщик" Type="int" />
           <Property Name="Производитель" Type="int" />
-          <Property Name="Категория товара" Type="int" />
-          <Property Name="Действующая скидка" Type="int" />
-          <Property Name="Кол-во на складе" Type="int" />
-          <Property Name="Описание товара" Type="nvarchar" MaxLength="255" />
+          <Property Name="КатегорияТовара" Type="int" />
+          <Property Name="ДействующаяСкидка" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="КолВоНаСкладе" Type="int" />
+          <Property Name="ОписаниеТовара" Type="nvarchar(max)" />
         </EntityType>
         <Association Name="FK_Заказ_СтатусЗаказа">
           <End Role="СтатусЗаказа" Type="Self.СтатусЗаказа" Multiplicity="0..1" />
@@ -117,7 +117,7 @@
               <PropertyRef Name="Код" />
             </Principal>
             <Dependent Role="Заказ">
-              <PropertyRef Name="Статус заказа" />
+              <PropertyRef Name="СтатусЗаказа" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -129,12 +129,12 @@
               <PropertyRef Name="Код" />
             </Principal>
             <Dependent Role="Сотрудник">
-              <PropertyRef Name="Роль сотрудника" />
+              <PropertyRef Name="РольСотрудника" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_СписокЗаказов_Артикул">
-          <End Role="Артикул" Type="Self.Артикул" Multiplicity="1" />
+          <End Role="Артикул" Type="Self.Артикул" Multiplicity="0..1" />
           <End Role="СписокЗаказов" Type="Self.СписокЗаказов" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Артикул">
@@ -169,15 +169,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Товар_ЕдиницыИзмерения">
-          <End Role="ЕдиницыИзмерения" Type="Self.ЕдиницыИзмерения" Multiplicity="0..1" />
+        <Association Name="FK_Товар_ЕдининицыИзмерения">
+          <End Role="ЕдининицыИзмерения" Type="Self.ЕдининицыИзмерения" Multiplicity="0..1" />
           <End Role="Товар" Type="Self.Товар" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ЕдиницыИзмерения">
+            <Principal Role="ЕдининицыИзмерения">
               <PropertyRef Name="Код" />
             </Principal>
             <Dependent Role="Товар">
-              <PropertyRef Name="Единица измерения" />
+              <PropertyRef Name="ЕдиницаИзмерения" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -189,7 +189,7 @@
               <PropertyRef Name="Код" />
             </Principal>
             <Dependent Role="Товар">
-              <PropertyRef Name="Категория товара" />
+              <PropertyRef Name="КатегорияТовара" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -225,13 +225,13 @@
               <PropertyRef Name="Код" />
             </Principal>
             <Dependent Role="Товар">
-              <PropertyRef Name="Тип товара" />
+              <PropertyRef Name="ТипТовара" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Хранилище PR16DBModelContainer">
           <EntitySet Name="Артикул" EntityType="Self.Артикул" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ЕдиницыИзмерения" EntityType="Self.ЕдиницыИзмерения" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ЕдининицыИзмерения" EntityType="Self.ЕдининицыИзмерения" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Заказ" EntityType="Self.Заказ" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="КатегорияТовара" EntityType="Self.КатегорияТовара" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Поставщик" EntityType="Self.Поставщик" Schema="dbo" store:Type="Tables" />
@@ -262,8 +262,8 @@
             <End Role="Артикул" EntitySet="Артикул" />
             <End Role="Товар" EntitySet="Товар" />
           </AssociationSet>
-          <AssociationSet Name="FK_Товар_ЕдиницыИзмерения" Association="Self.FK_Товар_ЕдиницыИзмерения">
-            <End Role="ЕдиницыИзмерения" EntitySet="ЕдиницыИзмерения" />
+          <AssociationSet Name="FK_Товар_ЕдининицыИзмерения" Association="Self.FK_Товар_ЕдининицыИзмерения">
+            <End Role="ЕдининицыИзмерения" EntitySet="ЕдининицыИзмерения" />
             <End Role="Товар" EntitySet="Товар" />
           </AssociationSet>
           <AssociationSet Name="FK_Товар_КатегорияТовара" Association="Self.FK_Товар_КатегорияТовара">
@@ -283,8 +283,7 @@
             <End Role="Товар" EntitySet="Товар" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PR16DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -293,37 +292,37 @@
             <PropertyRef Name="Код" />
           </Key>
           <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Артикул1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="СписокЗаказов" Relationship="Self.FK_СписокЗаказов_Артикул" FromRole="Артикул" ToRole="СписокЗаказов" />
           <NavigationProperty Name="Товар" Relationship="Self.FK_Товар_Артикул" FromRole="Артикул" ToRole="Товар" />
+          <Property Name="Наименование" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="ЕдиницыИзмерения">
+        <EntityType Name="ЕдининицыИзмерения">
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="Int32" Nullable="false" />
+          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Наименование" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Товар" Relationship="Self.FK_Товар_ЕдиницыИзмерения" FromRole="ЕдиницыИзмерения" ToRole="Товар" />
+          <NavigationProperty Name="Товар" Relationship="Self.FK_Товар_ЕдининицыИзмерения" FromRole="ЕдининицыИзмерения" ToRole="Товар" />
         </EntityType>
         <EntityType Name="Заказ">
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="Int32" Nullable="false" />
-          <Property Name="Дата_заказа" Type="DateTime" Precision="3" />
+          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ДатаЗаказа" Type="DateTime" Precision="3" />
           <Property Name="Фамилия" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Имя" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Отчество" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Код_для_получения" Type="Int32" />
-          <Property Name="Статус_заказа" Type="Int32" />
-          <NavigationProperty Name="СтатусЗаказа" Relationship="Self.FK_Заказ_СтатусЗаказа" FromRole="Заказ" ToRole="СтатусЗаказа" />
+          <Property Name="КодДляПолучения" Type="Int32" />
+          <Property Name="СтатусЗаказа" Type="Int32" />
+          <NavigationProperty Name="СтатусЗаказа1" Relationship="Self.FK_Заказ_СтатусЗаказа" FromRole="Заказ" ToRole="СтатусЗаказа" />
           <NavigationProperty Name="СписокЗаказов" Relationship="Self.FK_СписокЗаказов_Заказ" FromRole="Заказ" ToRole="СписокЗаказов" />
         </EntityType>
         <EntityType Name="КатегорияТовара">
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="Int32" Nullable="false" />
+          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Наименование" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Товар" Relationship="Self.FK_Товар_КатегорияТовара" FromRole="КатегорияТовара" ToRole="Товар" />
         </EntityType>
@@ -331,23 +330,23 @@
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="Int32" Nullable="false" />
+          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Наименование" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Товар" Relationship="Self.FK_Товар_Поставщик" FromRole="Поставщик" ToRole="Товар" />
+          <NavigationProperty Name="Товар" Relationship="PR16DBModel.FK_Товар_Поставщик" FromRole="Поставщик" ToRole="Товар" />
         </EntityType>
         <EntityType Name="Производитель">
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="Int32" Nullable="false" />
+          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Наименование" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Товар" Relationship="Self.FK_Товар_Производитель" FromRole="Производитель" ToRole="Товар" />
+          <NavigationProperty Name="Товар" Relationship="PR16DBModel.FK_Товар_Производитель" FromRole="Производитель" ToRole="Товар" />
         </EntityType>
         <EntityType Name="Роль">
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="Int32" Nullable="false" />
+          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Наименование" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Сотрудник" Relationship="Self.FK_Сотрудник_Роль" FromRole="Роль" ToRole="Сотрудник" />
         </EntityType>
@@ -355,11 +354,11 @@
           <Key>
             <PropertyRef Name="Логин" />
           </Key>
-          <Property Name="Роль_сотрудника" Type="Int32" />
+          <Property Name="Логин" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="РольСотрудника" Type="Int32" />
           <Property Name="Фамилия" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Имя" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Отчество" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Логин" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Пароль" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Роль" Relationship="Self.FK_Сотрудник_Роль" FromRole="Сотрудник" ToRole="Роль" />
         </EntityType>
@@ -368,7 +367,7 @@
             <PropertyRef Name="Код" />
           </Key>
           <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="КодАртикула" Type="Int32" Nullable="false" />
+          <Property Name="КодАртикула" Type="Int32" />
           <Property Name="КодЗаказа" Type="Int32" />
           <Property Name="Количество" Type="Int32" />
           <NavigationProperty Name="Артикул" Relationship="Self.FK_СписокЗаказов_Артикул" FromRole="СписокЗаказов" ToRole="Артикул" />
@@ -378,7 +377,7 @@
           <Key>
             <PropertyRef Name="Код" />
           </Key>
-          <Property Name="Код" Type="Int32" Nullable="false" />
+          <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Наименование" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Заказ" Relationship="Self.FK_Заказ_СтатусЗаказа" FromRole="СтатусЗаказа" ToRole="Заказ" />
         </EntityType>
@@ -387,8 +386,8 @@
             <PropertyRef Name="Код" />
           </Key>
           <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Тип_товара" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Товар" Relationship="Self.FK_Товар_ТипТовара" FromRole="ТипТовара" ToRole="Товар" />
+          <Property Name="ТипТовара1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Товар" Relationship="PR16DBModel.FK_Товар_ТипТовара" FromRole="ТипТовара" ToRole="Товар" />
         </EntityType>
         <EntityType Name="Товар">
           <Key>
@@ -396,24 +395,24 @@
           </Key>
           <Property Name="Код" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Артикул" Type="Int32" />
-          <Property Name="Тип_товара" Type="Int32" />
-          <Property Name="Единица_измерения" Type="Int32" />
-          <Property Name="Цена" Type="Int32" />
+          <Property Name="ТипТовара" Type="Int32" />
+          <Property Name="ЕдиницаИзмерения" Type="Int32" />
+          <Property Name="Цена" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Поставщик" Type="Int32" />
           <Property Name="Производитель" Type="Int32" />
-          <Property Name="Категория_товара" Type="Int32" />
-          <Property Name="Действующая_скидка" Type="Int32" />
-          <Property Name="Кол_во_на_складе" Type="Int32" />
-          <Property Name="Описание_товара" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="КатегорияТовара" Type="Int32" />
+          <Property Name="ДействующаяСкидка" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="КолВоНаСкладе" Type="Int32" />
+          <Property Name="ОписаниеТовара" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Артикул1" Relationship="Self.FK_Товар_Артикул" FromRole="Товар" ToRole="Артикул" />
-          <NavigationProperty Name="ЕдиницыИзмерения" Relationship="Self.FK_Товар_ЕдиницыИзмерения" FromRole="Товар" ToRole="ЕдиницыИзмерения" />
-          <NavigationProperty Name="КатегорияТовара" Relationship="Self.FK_Товар_КатегорияТовара" FromRole="Товар" ToRole="КатегорияТовара" />
-          <NavigationProperty Name="Поставщик1" Relationship="Self.FK_Товар_Поставщик" FromRole="Товар" ToRole="Поставщик" />
-          <NavigationProperty Name="Производитель1" Relationship="Self.FK_Товар_Производитель" FromRole="Товар" ToRole="Производитель" />
-          <NavigationProperty Name="ТипТовара" Relationship="Self.FK_Товар_ТипТовара" FromRole="Товар" ToRole="ТипТовара" />
+          <NavigationProperty Name="ЕдининицыИзмерения" Relationship="Self.FK_Товар_ЕдининицыИзмерения" FromRole="Товар" ToRole="ЕдининицыИзмерения" />
+          <NavigationProperty Name="КатегорияТовара1" Relationship="Self.FK_Товар_КатегорияТовара" FromRole="Товар" ToRole="КатегорияТовара" />
+          <NavigationProperty Name="Поставщик1" Relationship="PR16DBModel.FK_Товар_Поставщик" FromRole="Товар" ToRole="Поставщик" />
+          <NavigationProperty Name="Производитель1" Relationship="PR16DBModel.FK_Товар_Производитель" FromRole="Товар" ToRole="Производитель" />
+          <NavigationProperty Name="ТипТовара1" Relationship="PR16DBModel.FK_Товар_ТипТовара" FromRole="Товар" ToRole="ТипТовара" />
         </EntityType>
         <Association Name="FK_СписокЗаказов_Артикул">
-          <End Role="Артикул" Type="Self.Артикул" Multiplicity="1" />
+          <End Role="Артикул" Type="Self.Артикул" Multiplicity="0..1" />
           <End Role="СписокЗаказов" Type="Self.СписокЗаказов" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Артикул">
@@ -436,15 +435,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Товар_ЕдиницыИзмерения">
-          <End Role="ЕдиницыИзмерения" Type="Self.ЕдиницыИзмерения" Multiplicity="0..1" />
+        <Association Name="FK_Товар_ЕдининицыИзмерения">
+          <End Role="ЕдининицыИзмерения" Type="Self.ЕдининицыИзмерения" Multiplicity="0..1" />
           <End Role="Товар" Type="Self.Товар" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ЕдиницыИзмерения">
+            <Principal Role="ЕдининицыИзмерения">
               <PropertyRef Name="Код" />
             </Principal>
             <Dependent Role="Товар">
-              <PropertyRef Name="Единица_измерения" />
+              <PropertyRef Name="ЕдиницаИзмерения" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -456,7 +455,7 @@
               <PropertyRef Name="Код" />
             </Principal>
             <Dependent Role="Заказ">
-              <PropertyRef Name="Статус_заказа" />
+              <PropertyRef Name="СтатусЗаказа" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -480,31 +479,7 @@
               <PropertyRef Name="Код" />
             </Principal>
             <Dependent Role="Товар">
-              <PropertyRef Name="Категория_товара" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Товар_Поставщик">
-          <End Role="Поставщик" Type="Self.Поставщик" Multiplicity="0..1" />
-          <End Role="Товар" Type="Self.Товар" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Поставщик">
-              <PropertyRef Name="Код" />
-            </Principal>
-            <Dependent Role="Товар">
-              <PropertyRef Name="Поставщик" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Товар_Производитель">
-          <End Role="Производитель" Type="Self.Производитель" Multiplicity="0..1" />
-          <End Role="Товар" Type="Self.Товар" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Производитель">
-              <PropertyRef Name="Код" />
-            </Principal>
-            <Dependent Role="Товар">
-              <PropertyRef Name="Производитель" />
+              <PropertyRef Name="КатегорияТовара" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -516,25 +491,13 @@
               <PropertyRef Name="Код" />
             </Principal>
             <Dependent Role="Сотрудник">
-              <PropertyRef Name="Роль_сотрудника" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Товар_ТипТовара">
-          <End Role="ТипТовара" Type="Self.ТипТовара" Multiplicity="0..1" />
-          <End Role="Товар" Type="Self.Товар" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ТипТовара">
-              <PropertyRef Name="Код" />
-            </Principal>
-            <Dependent Role="Товар">
-              <PropertyRef Name="Тип_товара" />
+              <PropertyRef Name="РольСотрудника" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="PR16DBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Артикул" EntityType="Self.Артикул" />
-          <EntitySet Name="ЕдиницыИзмерения" EntityType="Self.ЕдиницыИзмерения" />
+          <EntitySet Name="ЕдининицыИзмерения" EntityType="Self.ЕдининицыИзмерения" />
           <EntitySet Name="Заказ" EntityType="Self.Заказ" />
           <EntitySet Name="КатегорияТовара" EntityType="Self.КатегорияТовара" />
           <EntitySet Name="Поставщик" EntityType="Self.Поставщик" />
@@ -553,8 +516,8 @@
             <End Role="Артикул" EntitySet="Артикул" />
             <End Role="Товар" EntitySet="Товар" />
           </AssociationSet>
-          <AssociationSet Name="FK_Товар_ЕдиницыИзмерения" Association="Self.FK_Товар_ЕдиницыИзмерения">
-            <End Role="ЕдиницыИзмерения" EntitySet="ЕдиницыИзмерения" />
+          <AssociationSet Name="FK_Товар_ЕдининицыИзмерения" Association="Self.FK_Товар_ЕдининицыИзмерения">
+            <End Role="ЕдининицыИзмерения" EntitySet="ЕдининицыИзмерения" />
             <End Role="Товар" EntitySet="Товар" />
           </AssociationSet>
           <AssociationSet Name="FK_Заказ_СтатусЗаказа" Association="Self.FK_Заказ_СтатусЗаказа">
@@ -569,23 +532,59 @@
             <End Role="КатегорияТовара" EntitySet="КатегорияТовара" />
             <End Role="Товар" EntitySet="Товар" />
           </AssociationSet>
-          <AssociationSet Name="FK_Товар_Поставщик" Association="Self.FK_Товар_Поставщик">
-            <End Role="Поставщик" EntitySet="Поставщик" />
-            <End Role="Товар" EntitySet="Товар" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Товар_Производитель" Association="Self.FK_Товар_Производитель">
-            <End Role="Производитель" EntitySet="Производитель" />
-            <End Role="Товар" EntitySet="Товар" />
-          </AssociationSet>
           <AssociationSet Name="FK_Сотрудник_Роль" Association="Self.FK_Сотрудник_Роль">
             <End Role="Роль" EntitySet="Роль" />
             <End Role="Сотрудник" EntitySet="Сотрудник" />
           </AssociationSet>
-          <AssociationSet Name="FK_Товар_ТипТовара" Association="Self.FK_Товар_ТипТовара">
+          <AssociationSet Name="FK_Товар_Поставщик" Association="PR16DBModel.FK_Товар_Поставщик">
+            <End Role="Поставщик" EntitySet="Поставщик" />
+            <End Role="Товар" EntitySet="Товар" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Товар_Производитель" Association="PR16DBModel.FK_Товар_Производитель">
+            <End Role="Производитель" EntitySet="Производитель" />
+            <End Role="Товар" EntitySet="Товар" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Товар_ТипТовара" Association="PR16DBModel.FK_Товар_ТипТовара">
             <End Role="ТипТовара" EntitySet="ТипТовара" />
             <End Role="Товар" EntitySet="Товар" />
           </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Товар_Поставщик">
+          <End Type="PR16DBModel.Поставщик" Role="Поставщик" Multiplicity="0..1" />
+          <End Type="PR16DBModel.Товар" Role="Товар" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Поставщик">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="Товар">
+              <PropertyRef Name="Поставщик" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Товар_Производитель">
+          <End Type="PR16DBModel.Производитель" Role="Производитель" Multiplicity="0..1" />
+          <End Type="PR16DBModel.Товар" Role="Товар" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Производитель">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="Товар">
+              <PropertyRef Name="Производитель" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Товар_ТипТовара">
+          <End Type="PR16DBModel.ТипТовара" Role="ТипТовара" Multiplicity="0..1" />
+          <End Type="PR16DBModel.Товар" Role="Товар" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ТипТовара">
+              <PropertyRef Name="Код" />
+            </Principal>
+            <Dependent Role="Товар">
+              <PropertyRef Name="ТипТовара" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -595,14 +594,14 @@
           <EntitySetMapping Name="Артикул">
             <EntityTypeMapping TypeName="PR16DBModel.Артикул">
               <MappingFragment StoreEntitySet="Артикул">
+                <ScalarProperty Name="Наименование" ColumnName="Наименование" />
                 <ScalarProperty Name="Код" ColumnName="Код" />
-                <ScalarProperty Name="Артикул1" ColumnName="Артикул" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ЕдиницыИзмерения">
-            <EntityTypeMapping TypeName="PR16DBModel.ЕдиницыИзмерения">
-              <MappingFragment StoreEntitySet="ЕдиницыИзмерения">
+          <EntitySetMapping Name="ЕдининицыИзмерения">
+            <EntityTypeMapping TypeName="PR16DBModel.ЕдининицыИзмерения">
+              <MappingFragment StoreEntitySet="ЕдининицыИзмерения">
                 <ScalarProperty Name="Код" ColumnName="Код" />
                 <ScalarProperty Name="Наименование" ColumnName="Наименование" />
               </MappingFragment>
@@ -612,12 +611,12 @@
             <EntityTypeMapping TypeName="PR16DBModel.Заказ">
               <MappingFragment StoreEntitySet="Заказ">
                 <ScalarProperty Name="Код" ColumnName="Код" />
-                <ScalarProperty Name="Дата_заказа" ColumnName="Дата заказа" />
+                <ScalarProperty Name="ДатаЗаказа" ColumnName="ДатаЗаказа" />
                 <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
                 <ScalarProperty Name="Имя" ColumnName="Имя" />
                 <ScalarProperty Name="Отчество" ColumnName="Отчество" />
-                <ScalarProperty Name="Код_для_получения" ColumnName="Код для получения" />
-                <ScalarProperty Name="Статус_заказа" ColumnName="Статус заказа" />
+                <ScalarProperty Name="КодДляПолучения" ColumnName="КодДляПолучения" />
+                <ScalarProperty Name="СтатусЗаказа" ColumnName="СтатусЗаказа" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -656,11 +655,11 @@
           <EntitySetMapping Name="Сотрудник">
             <EntityTypeMapping TypeName="PR16DBModel.Сотрудник">
               <MappingFragment StoreEntitySet="Сотрудник">
-                <ScalarProperty Name="Роль_сотрудника" ColumnName="Роль сотрудника" />
+                <ScalarProperty Name="Логин" ColumnName="Логин" />
+                <ScalarProperty Name="РольСотрудника" ColumnName="РольСотрудника" />
                 <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
                 <ScalarProperty Name="Имя" ColumnName="Имя" />
                 <ScalarProperty Name="Отчество" ColumnName="Отчество" />
-                <ScalarProperty Name="Логин" ColumnName="Логин" />
                 <ScalarProperty Name="Пароль" ColumnName="Пароль" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -687,7 +686,7 @@
             <EntityTypeMapping TypeName="PR16DBModel.ТипТовара">
               <MappingFragment StoreEntitySet="ТипТовара">
                 <ScalarProperty Name="Код" ColumnName="Код" />
-                <ScalarProperty Name="Тип_товара" ColumnName="Тип товара" />
+                <ScalarProperty Name="ТипТовара1" ColumnName="ТипТовара" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -696,15 +695,15 @@
               <MappingFragment StoreEntitySet="Товар">
                 <ScalarProperty Name="Код" ColumnName="Код" />
                 <ScalarProperty Name="Артикул" ColumnName="Артикул" />
-                <ScalarProperty Name="Тип_товара" ColumnName="Тип товара" />
-                <ScalarProperty Name="Единица_измерения" ColumnName="Единица измерения" />
+                <ScalarProperty Name="ТипТовара" ColumnName="ТипТовара" />
+                <ScalarProperty Name="ЕдиницаИзмерения" ColumnName="ЕдиницаИзмерения" />
                 <ScalarProperty Name="Цена" ColumnName="Цена" />
                 <ScalarProperty Name="Поставщик" ColumnName="Поставщик" />
                 <ScalarProperty Name="Производитель" ColumnName="Производитель" />
-                <ScalarProperty Name="Категория_товара" ColumnName="Категория товара" />
-                <ScalarProperty Name="Действующая_скидка" ColumnName="Действующая скидка" />
-                <ScalarProperty Name="Кол_во_на_складе" ColumnName="Кол-во на складе" />
-                <ScalarProperty Name="Описание_товара" ColumnName="Описание товара" />
+                <ScalarProperty Name="КатегорияТовара" ColumnName="КатегорияТовара" />
+                <ScalarProperty Name="ДействующаяСкидка" ColumnName="ДействующаяСкидка" />
+                <ScalarProperty Name="КолВоНаСкладе" ColumnName="КолВоНаСкладе" />
+                <ScalarProperty Name="ОписаниеТовара" ColumnName="ОписаниеТовара" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

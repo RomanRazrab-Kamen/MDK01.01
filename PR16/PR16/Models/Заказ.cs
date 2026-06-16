@@ -21,14 +21,14 @@ namespace PR16.Models
         }
     
         public int Код { get; set; }
-        public Nullable<System.DateTime> Дата_заказа { get; set; }
+        public Nullable<System.DateTime> ДатаЗаказа { get; set; }
         public string Фамилия { get; set; }
         public string Имя { get; set; }
         public string Отчество { get; set; }
-        public Nullable<int> Код_для_получения { get; set; }
-        public Nullable<int> Статус_заказа { get; set; }
+        public Nullable<int> КодДляПолучения { get; set; }
+        public Nullable<int> СтатусЗаказа { get; set; }
     
-        public virtual СтатусЗаказа СтатусЗаказа { get; set; }
+        public virtual СтатусЗаказа СтатусЗаказа1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<СписокЗаказов> СписокЗаказов { get; set; }
     }
