@@ -19,17 +19,17 @@ namespace PR18.Views
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class Authorization : Window
+    public partial class AuthorizationView : Window
     {
-        public Authorization()
+        public AuthorizationView()
         {
             InitializeComponent();
         }
 
         private void ButtonRegistration_Click(object sender, RoutedEventArgs e)
         {
-            Regisration regisration = new Regisration();
-            regisration.Show();
+            RegisrationView RegisrationView = new RegisrationView();
+            RegisrationView.Show();
             this.Close();
         }
         private void ButtonCountineAsGuest_Click(object sender, RoutedEventArgs e)
@@ -38,7 +38,7 @@ namespace PR18.Views
             guestView.Show();
             this.Close();
         }
-        private void ButtonAuthorization_Click(object sender, RoutedEventArgs e)
+        private void ButtonAuthorizationView_Click(object sender, RoutedEventArgs e)
         {
             try
             {

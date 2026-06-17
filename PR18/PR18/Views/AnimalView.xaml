@@ -5,9 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PR18.Views"
         mc:Ignorable="d"
+        xmlns:services="clr-namespace:PR18.Services"
         Title="Информация о животном" Height="500" Width="850"
-        WindowStartupLocation="CenterScreen" Background="#F9F9F9">
-
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <services:BytesToImageConverter x:Key="BytesToImageConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -17,10 +20,9 @@
 
         <TextBlock Text="{Binding Name}" 
                    FontSize="28" 
-                   FontWeight="Bold" 
-                   Foreground="#333333"
+                   FontWeight="Bold"
                    HorizontalAlignment="Center" 
-                   Margin="0,0,0,20"
+                   Margin="0,20,0,20"
                    TextWrapping="Wrap"/>
 
         <Grid Grid.Row="1" Margin="0,0,0,15">
@@ -30,46 +32,47 @@
             </Grid.ColumnDefinitions>
 
             <Grid Margin="10">
-                <Image x:Name="AnimalImage" Stretch="Uniform" Margin="10"/>
+                <Button Click="AnimalImage_Click" Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip="Нажмите на картинку, чтобы услышать животное">
+                    <Grid>
+                        <Image x:Name="AnimalImage" 
+                               Source="{Binding Image, Converter={StaticResource BytesToImageConverter}}" 
+                               Stretch="Uniform" 
+                               Margin="10"/>
 
-                <TextBlock Text="Нет изображения" 
-                            HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" 
-                            Foreground="Gray" 
-                            FontSize="16">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ElementName=AnimalImage, Path=Source}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                        <TextBlock Text="Нет изображения" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" 
+                                   FontSize="16">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=AnimalImage, Path=Source}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </Button>
             </Grid>
-           
+
             <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="10">
                 <StackPanel Margin="10,0,5,0">
 
-                    <TextBlock Text="Описание:" FontSize="16" FontWeight="Bold" Foreground="#555555" Margin="0,0,0,5"/>
-                    <TextBlock Text="{Binding Description}" FontSize="14" TextWrapping="Wrap" Margin="0,0,0,20" Foreground="#222222"/>
+                    <TextBlock Text="Описание:" Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding Description}" Margin="0,0,0,20"/>
 
-                    <TextBlock Text="Интересные факты:" FontSize="16" FontWeight="Bold" Foreground="#555555" Margin="0,0,0,5"/>
-                    <TextBlock Text="{Binding InterestingFacts}" FontSize="14" TextWrapping="Wrap" Margin="0,0,0,10" Foreground="#222222"/>
+                    <TextBlock Text="Интересные факты:" Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding InterestingFacts}" Margin="0,0,0,10"/>
 
                 </StackPanel>
             </ScrollViewer>
         </Grid>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Закрыть" 
-                    Width="120" 
-                    Height="35" 
-                    Background="#76E383" 
-                    BorderThickness="0"
-                    FontSize="14" 
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,20">
+            <Button Content="Закрыть"
                     Cursor="Hand"
                     Click="ButtonClose_Click"/>
         </StackPanel>

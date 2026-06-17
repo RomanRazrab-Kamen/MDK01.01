@@ -9,6 +9,9 @@
         Title="Виртуальный зоопарк - Режим Администратора" Height="580" Width="800">
     <Window.Resources>
         <services:BytesToImageConverter x:Key="BytesToImageConverter"/>
+       
+        <services:ApprovalConverter x:Key="ApprovalConverter"/>
+        <services:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
     </Window.Resources>
     <Grid>
         <TabControl>
@@ -42,11 +45,9 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Margin="15" Width="160">
-                                        <Border BorderBrush="#498C51" 
-                                            BorderThickness="2" 
+                                        <Border BorderThickness="2" 
                                             CornerRadius="8" 
-                                            Height="140" 
-                                            Background="White">
+                                            Height="140">
                                             <Image 
                                                 Source="{Binding Image, 
                                                 Converter={StaticResource BytesToImageConverter}}"/>
@@ -68,7 +69,74 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Пользователи">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
+                    <StackPanel Grid.Row="0" Margin="10,10,10,0">
+                        <TextBlock Text="Управление учетными записями" FontSize="20" FontWeight="Bold"/>
+                    </StackPanel>
+
+                    <DataGrid Name="UsersDataGrid" 
+                  Grid.Row="1" 
+                  Margin="15,0,15,15" 
+                  AutoGenerateColumns="False" 
+                  CanUserAddRows="False"
+                  RowHeight="40" 
+                  GridLinesVisibility="Horizontal">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" Width="2*"/>
+                            <DataGridTextColumn Header="E-mail" Binding="{Binding Email}" Width="1.5*"/>
+                            <DataGridTextColumn Header="Логин" Binding="{Binding Login}" Width="1*"/>
+
+                            <DataGridTemplateColumn Header="Статус входа" Width="120">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding IsApproved, Converter={StaticResource ApprovalConverter}}" 
+                                       FontWeight="Medium"
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Действия" Width="260">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Button Content="Одобрить" 
+                                        Click="ButtonApprove_Click" 
+                                        Tag="{Binding}"
+                                        Width="80" Height="26" Margin="5,0"
+                                        IsEnabled="{Binding IsApproved, Converter={StaticResource InverseBooleanConverter}}"/>
+
+                                            <Button Click="ButtonBlock_Click" 
+                                        Tag="{Binding}"
+                                        Width="140" Height="26" Margin="10,0">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsBlocked}" Value="True">
+                                                                <Setter Property="Content" Value="Разблокировать"/>
+                                                                <Setter Property="Background" Value="#FF9800"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsBlocked}" Value="False">
+                                                                <Setter Property="Content" Value="Заблокировать"/>
+                                                                <Setter Property="Background" Value="#F44336"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

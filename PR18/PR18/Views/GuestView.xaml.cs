@@ -36,7 +36,7 @@ namespace PR18.Views
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            var registerWin = new Regisration();
+            var registerWin = new RegisrationView();
             registerWin.Show();
             
             this.Close();

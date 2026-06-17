@@ -1,17 +1,12 @@
 ﻿using PR18.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PR18.Views
 {
@@ -24,22 +19,48 @@ namespace PR18.Views
         {
             InitializeComponent();
             LoadAnimals();
+            LoadUsers();
         }
+
         private void LoadAnimals()
         {
             using (var db = new PR18DBEntities())
             {
-                AnimalsListBox.ItemsSource = db.Animals.ToList();
+                if (AnimalsListBox != null)
+                {
+                    AnimalsListBox.ItemsSource = db.Animals.ToList();
+                }
             }
         }
+
         private void Button_AddAnimal(object sender, RoutedEventArgs e)
         {
-
+            AddAnimalView addWindow = new AddAnimalView();
+            addWindow.Owner = this;
+            if (addWindow.ShowDialog() == true)
+            {
+                LoadAnimals();
+            }
         }
+
         private void Button_EditAnimal(object sender, RoutedEventArgs e)
         {
+            if (AnimalsListBox.SelectedItem is Animals selectedAnimal)
+            {
+                EditAnimalView editWindow = new EditAnimalView(selectedAnimal);
+                editWindow.Owner = this;
 
+                if (editWindow.ShowDialog() == true)
+                {
+                    LoadAnimals();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Пожалуйста, выберите животное из списка для изменения.", "Предупреждение");
+            }
         }
+
         private void Button_DeleteAnimal(object sender, RoutedEventArgs e)
         {
             if (AnimalsListBox.SelectedItem is Animals selectedAnimal)
@@ -53,7 +74,6 @@ namespace PR18.Views
                         if (animalToDelete != null)
                         {
                             db.Animals.Remove(animalToDelete);
-
                             db.SaveChanges();
 
                             MessageBox.Show("Животное успешно удалено!");
@@ -69,6 +89,73 @@ namespace PR18.Views
             else
             {
                 MessageBox.Show("Пожалуйста, выберите животное из списка для удаления.", "Внимание");
+            }
+        }
+
+        private void LoadUsers()
+        {
+            try
+            {
+                using (var db = new PR18DBEntities())
+                {
+                    UsersDataGrid.ItemsSource = db.User.Where(u => u.Role1.ID == 2).ToList();
+                }
+            }
+            catch { }
+        }
+
+        private void ButtonApprove_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button?.Tag is User selectedUser)
+            {
+                try
+                {
+                    using (var db = new PR18DBEntities())
+                    {
+                        var userToUpdate = db.User.FirstOrDefault(u => u.ID == selectedUser.ID);
+                        if (userToUpdate != null)
+                        {
+                            userToUpdate.IsApproved = true;
+                            db.SaveChanges();
+
+                            MessageBox.Show($"Пользователь {userToUpdate.Login} успешно одобрен!");
+                            LoadUsers();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при обновлении: {ex.Message}");
+                }
+            }
+        }
+
+        private void ButtonBlock_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button?.Tag is User selectedUser)
+            {
+                try
+                {
+                    using (var db = new PR18DBEntities())
+                    {
+                        var userToUpdate = db.User.FirstOrDefault(u => u.ID == selectedUser.ID);
+                        if (userToUpdate != null)
+                        {
+                            userToUpdate.IsApproved = !userToUpdate.IsApproved;
+                            db.SaveChanges();
+
+                            string status = (bool)userToUpdate.IsApproved ? "заблокирован" : "разблокирован";
+                            MessageBox.Show($"Пользователь {userToUpdate.Login} успешно {status}!");
+                            LoadUsers();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при блокировке: {ex.Message}");
+                }
             }
         }
     }

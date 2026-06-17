@@ -13,13 +13,13 @@ using System.Windows.Media.Imaging;
 namespace PR18.Views
 {
     /// <summary>
-    /// Логика взаимодействия для Regisration.xaml
+    /// Логика взаимодействия для RegisrationView.xaml
     /// </summary>
-    public partial class Regisration : Window
+    public partial class RegisrationView : Window
     {
         private PR18DBEntities _db = new PR18DBEntities();
         private string _currentCaptchaText = string.Empty;
-        public Regisration()
+        public RegisrationView()
         {
             InitializeComponent();
             GenerateCaptcha();
@@ -68,8 +68,8 @@ namespace PR18.Views
                 _db.User.Add(user);
                 _db.SaveChanges();
 
-                Authorization authorization = new Authorization();
-                authorization.Show();
+                AuthorizationView AuthorizationView = new AuthorizationView();
+                AuthorizationView.Show();
                 this.Close();
             }
         }
@@ -148,10 +148,10 @@ namespace PR18.Views
             return true;
         }
 
-        private void ButtonAuthorization_Click(object sender, RoutedEventArgs e)
+        private void ButtonAuthorizationView_Click(object sender, RoutedEventArgs e)
         {
-            Authorization authorization = new Authorization();
-            authorization.Show();
+            AuthorizationView AuthorizationView = new AuthorizationView();
+            AuthorizationView.Show();
             this.Close();
         }
     }

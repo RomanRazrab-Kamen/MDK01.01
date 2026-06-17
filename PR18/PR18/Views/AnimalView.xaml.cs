@@ -12,7 +12,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PR18.Views
 {
@@ -23,6 +22,8 @@ namespace PR18.Views
     {
         public Animals CurrentAnimal { get; set; }
 
+        private MediaPlayer _mediaPlayer = new MediaPlayer();
+
         public AnimalView(Animals animal)
         {
             InitializeComponent();
@@ -31,6 +32,8 @@ namespace PR18.Views
             this.DataContext = CurrentAnimal;
 
             DisplayAnimalImage();
+
+            PlayAnimalSound();
         }
 
         private void DisplayAnimalImage()
@@ -58,8 +61,37 @@ namespace PR18.Views
             }
         }
 
+        private void AnimalImage_Click(object sender, RoutedEventArgs e)
+        {
+            PlayAnimalSound();
+        }
+
+        private void PlayAnimalSound()
+        {
+            if (CurrentAnimal != null && !string.IsNullOrEmpty(CurrentAnimal.Sound))
+            {
+                try
+                {
+                    string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                    string projectDir = Path.GetFullPath(Path.Combine(baseDir, @"..\..\"));
+                    string fullSoundPath = Path.Combine(projectDir, "Data", "Sounds", CurrentAnimal.Sound);
+
+                    if (File.Exists(fullSoundPath))
+                    {
+                        _mediaPlayer.Open(new Uri(fullSoundPath));
+                        _mediaPlayer.Play();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Не удалось воспроизвести звук: {ex.Message}", "Ошибка звука");
+                }
+            }
+        }
+
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
+            _mediaPlayer.Stop();
             this.Close();
         }
     }
